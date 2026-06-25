@@ -4,6 +4,7 @@ const calc = require('../../utils/calc.js');
 Page({
   data: {
     hasData: false,
+    version: '',
     result: null,
     freedomIdx: '--',
     freedomLabel: '填写参数后查看',
@@ -24,6 +25,8 @@ Page({
   },
 
   onShow() {
+    const app = getApp();
+    this.setData({ version: app.globalData.config.version });
     const saved = wx.getStorageSync('shoreos_data');
     if (saved) {
       const d = JSON.parse(saved);

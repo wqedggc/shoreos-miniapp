@@ -253,4 +253,5 @@
     <view class="nav-btn primary" wx:if="{{step < totalSteps - 1}}" bindtap="nextStep">下一题 →</view>
     <view class="nav-btn done" wx:if="{{step === totalSteps - 1}}" bindtap="finish">✨ 完成，看结果</view>
   </view>
+  <view class="version">v{{version}}</view>
 </view>

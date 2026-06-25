@@ -15,3 +15,4 @@ page {
 .text-green { color: #34c759; }
 .text-orange { color: #ff9500; }
 .text-red { color: #ff3b30; }
+.version { text-align: center; font-size: 10px; color: #c7c7cc; padding: 4px 0 16px; }

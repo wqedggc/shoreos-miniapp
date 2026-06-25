@@ -1,11 +1,13 @@
-// ShoreOS 全局配置
+// 统一配置入口
+const config = require('./config.js');
+
 App({
   globalData: {
-    version: '1.0.0',
-    userData: null  // 由各页面填充
+    config: config,
+    version: config.version,
+    userData: null
   },
   onLaunch() {
-    // 恢复缓存数据
     const saved = wx.getStorageSync('shoreos_data');
     if (saved) {
       this.globalData.userData = JSON.parse(saved);

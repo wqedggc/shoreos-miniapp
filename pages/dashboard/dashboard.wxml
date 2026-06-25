@@ -74,5 +74,6 @@
 
     <!-- 提示 -->
     <view class="hint">🏝️ 在「我的」Tab 中修改数据，返回此页实时更新</view>
+    <view class="version">v{{version}}</view>
   </block>
 </view>

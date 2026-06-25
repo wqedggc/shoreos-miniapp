@@ -6,7 +6,8 @@ Page({
     step: 0,
     totalSteps: 7,
     progress: 0,
-    // 用户数据
+    version: '',
+    // 用户数据（从 config.defaults 初始化）
     birthYear: 1995,
     gender: '',
     workYears: 7,
@@ -42,6 +43,15 @@ Page({
   },
 
   onLoad() {
+    const app = getApp();
+    const def = app.globalData.config.defaults;
+    // 用配置的默认值覆盖初始状态
+    this.setData({
+      pensionMin: def.pensionMin,
+      medicalMin: def.medicalMin,
+      assetReturn: def.assetReturn,
+      version: app.globalData.config.version
+    });
     const saved = wx.getStorageSync('shoreos_data');
     if (saved) {
       const d = JSON.parse(saved);
