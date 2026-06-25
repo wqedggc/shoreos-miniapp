@@ -1,0 +1,78 @@
+<!-- pages/dashboard/dashboard.wxml -->
+<view class="dashboard">
+  <!-- 欢迎页 -->
+  <view wx:if="{{!hasData}}" class="welcome-card">
+    <view class="wc-emoji">👋</view>
+    <view class="wc-title">欢迎使用 ShoreOS</view>
+    <view class="wc-desc">切换到「我的」Tab 填写财务数据，<br>然后回来查看你的自由指数</view>
+  </view>
+
+  <!-- 仪表盘 -->
+  <block wx:if="{{hasData}}">
+    <!-- 自由指数大卡 -->
+    <view class="highlight-card">
+      <view class="hl-emoji">🎯</view>
+      <view class="hl-value">{{freedomIdx}}</view>
+      <view class="hl-label">{{freedomLabel}}</view>
+      <view class="hl-meta">
+        <text>FIRE目标 {{fireTarget}}</text>
+        <text>还差 {{fireGap}}</text>
+        <text>预计 {{fireETA}}</text>
+      </view>
+    </view>
+
+    <!-- 指标网格 -->
+    <view class="metrics">
+      <view class="metric green">
+        <view class="m-emoji">💰</view>
+        <view class="m-val">{{annualSave}}</view>
+        <view class="m-lbl">每年存下</view>
+        <view class="m-sub">{{saveSub}}</view>
+      </view>
+      <view class="metric blue">
+        <view class="m-emoji">⏳</view>
+        <view class="m-val">{{ssStatus}}</view>
+        <view class="m-lbl">社保养老</view>
+        <view class="m-sub">{{ssSub}}</view>
+      </view>
+      <view class="metric orange">
+        <view class="m-emoji">🛟</view>
+        <view class="m-val">{{quitSurvive}}</view>
+        <view class="m-lbl">若不工作能撑</view>
+        <view class="m-sub">{{quitSub}}</view>
+      </view>
+      <view class="metric red">
+        <view class="m-emoji">📉</view>
+        <view class="m-val">{{assetGap}}</view>
+        <view class="m-lbl">离目标缺口</view>
+        <view class="m-sub">{{assetGapSub}}</view>
+      </view>
+    </view>
+
+    <!-- 情景推演表 -->
+    <view class="card">
+      <view class="card-title">🔮 情景推演</view>
+      <view class="table-wrap">
+        <view class="table-header">
+          <text class="th w1">情景</text>
+          <text class="th w2">年龄</text>
+          <text class="th w3">攒到</text>
+          <text class="th w4">可持续</text>
+          <text class="th w5">社保</text>
+          <text class="th w6">自由</text>
+        </view>
+        <view wx:for="{{scenarios}}" wx:key="age" class="table-row">
+          <text class="td w1">{{item.label}}</text>
+          <text class="td w2">{{item.age}}岁</text>
+          <text class="td w3 hi">{{item.assetsStr}}</text>
+          <text class="td w4 {{item.survival > 30 ? 'ok' : item.survival > 10 ? 'wn' : ''}}">{{item.survivalStr}}</text>
+          <text class="td w5">养{{item.penStr}} 医{{item.medStr}}</text>
+          <text class="td w6 {{item.fi >= 100 ? 'ok' : item.fi >= 50 ? 'hi' : ''}}">{{item.fiStr}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提示 -->
+    <view class="hint">🏝️ 在「我的」Tab 中修改数据，返回此页实时更新</view>
+  </block>
+</view>

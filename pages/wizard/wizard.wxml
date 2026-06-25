@@ -1,0 +1,256 @@
+<!-- pages/wizard/wizard.wxml -->
+<view class="wizard">
+  <!-- 进度条 -->
+  <view class="progress-bar">
+    <view class="progress-fill" style="width:{{progress}}%"></view>
+  </view>
+
+  <!-- 步骤 0: 基本信息 -->
+  <view wx:if="{{step === 0}}" class="step-card">
+    <view class="step-emoji">👤</view>
+    <view class="step-title">先简单认识一下你</view>
+
+    <view class="section-label">性别</view>
+    <view class="chip-row">
+      <view class="chip {{gender==='male'?'active':''}}" bindtap="setGender" data-v="male">👨 男</view>
+      <view class="chip {{gender==='female'?'active':''}}" bindtap="setGender" data-v="female">👩 女</view>
+    </view>
+
+    <view class="section-label">出生年份</view>
+    <view class="stepper">
+      <view class="step-btn" bindtap="stepYear" data-v="-1">−</view>
+      <view class="step-val">{{birthYear}}年</view>
+      <view class="step-btn" bindtap="stepYear" data-v="1">+</view>
+    </view>
+
+    <view class="section-label">已工作年限</view>
+    <view class="stepper">
+      <view class="step-btn" bindtap="stepWork" data-v="-1">−</view>
+      <view class="step-val">{{workYears}}年</view>
+      <view class="step-btn" bindtap="stepWork" data-v="1">+</view>
+    </view>
+
+    <view class="section-label">工作城市</view>
+    <view class="chip-row">
+      <view class="chip" bindtap="applyCity" data-v="beijing">北京</view>
+      <view class="chip" bindtap="applyCity" data-v="shanghai">上海</view>
+      <view class="chip" bindtap="applyCity" data-v="guangzhou">广州</view>
+      <view class="chip" bindtap="applyCity" data-v="shenzhen">深圳</view>
+    </view>
+  </view>
+
+  <!-- 步骤 1: 社保 -->
+  <view wx:if="{{step === 1}}" class="step-card">
+    <view class="step-emoji">🛡️</view>
+    <view class="step-title">社保参数 <text class="text-muted">(城市预设已自动填写)</text></view>
+
+    <view class="form-row">
+      <text class="form-label">养老最低年限</text>
+      <input class="form-input" type="number" value="{{pensionMin}}" data-field="pensionMin" bindinput="onInputChange"/>
+      <text class="form-unit">年</text>
+    </view>
+    <view class="form-row">
+      <text class="form-label">医保终身年限</text>
+      <input class="form-input" type="number" value="{{medicalMin}}" data-field="medicalMin" bindinput="onInputChange"/>
+      <text class="form-unit">年</text>
+    </view>
+    <view class="form-row">
+      <text class="form-label">自缴养老</text>
+      <input class="form-input" type="number" value="{{pensionSelfPay}}" data-field="pensionSelfPay" bindinput="onInputChange"/>
+      <text class="form-unit">元/月</text>
+    </view>
+    <view class="form-row">
+      <text class="form-label">自缴医保</text>
+      <input class="form-input" type="number" value="{{medicalSelfPay}}" data-field="medicalSelfPay" bindinput="onInputChange"/>
+      <text class="form-unit">元/月</text>
+    </view>
+
+    <view class="section-label">缴纳策略</view>
+    <view class="chip-row">
+      <view class="chip {{ssStrategy==='min'?'active':''}}" bindtap="setSSStrategy" data-v="min">达标即停</view>
+      <view class="chip {{ssStrategy==='retire'?'active':''}}" bindtap="setSSStrategy" data-v="retire">缴到退休</view>
+    </view>
+  </view>
+
+  <!-- 步骤 2: 收入 -->
+  <view wx:if="{{step === 2}}" class="step-card">
+    <view class="step-emoji">💸</view>
+    <view class="step-title">一年到手多少钱？</view>
+    <view class="chip-row">
+      <view class="chip" bindtap="onInputChange" data-field="incomePost" data-v="10">10万</view>
+      <view class="chip" bindtap="onInputChange" data-field="incomePost" data-v="20">20万</view>
+      <view class="chip" bindtap="onInputChange" data-field="incomePost" data-v="30">30万</view>
+      <view class="chip" bindtap="onInputChange" data-field="incomePost" data-v="50">50万</view>
+    </view>
+    <view class="form-row center-input">
+      <input class="form-input big" type="digit" value="{{incomePost}}" placeholder="手动输入" data-field="incomePost" bindinput="onInputChange"/>
+      <text class="form-unit">万元/年</text>
+    </view>
+  </view>
+
+  <!-- 步骤 3: 住房 -->
+  <view wx:if="{{step === 3}}" class="step-card">
+    <view class="step-emoji">🏠</view>
+    <view class="step-title">住房情况</view>
+    <view class="chip-row">
+      <view class="chip {{houseType==='rent'?'active':''}}" bindtap="setHouseType" data-v="rent">租房</view>
+      <view class="chip {{houseType==='mortgage'?'active':''}}" bindtap="setHouseType" data-v="mortgage">有房贷</view>
+      <view class="chip {{houseType==='none'?'active':''}}" bindtap="setHouseType" data-v="none">无房贷</view>
+    </view>
+
+    <view wx:if="{{houseType==='rent'}}">
+      <view class="form-row">
+        <text class="form-label">月租金</text>
+        <input class="form-input" type="digit" value="{{expRent}}" data-field="expRent" bindinput="onInputChange"/>
+        <text class="form-unit">元</text>
+      </view>
+    </view>
+    <view wx:if="{{houseType==='mortgage'}}">
+      <view class="form-row">
+        <text class="form-label">月供</text>
+        <input class="form-input" type="digit" value="{{expMortgage}}" data-field="expMortgage" bindinput="onInputChange"/>
+        <text class="form-unit">元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">剩余年限</text>
+        <input class="form-input" type="number" value="{{mortgageYearsLeft}}" data-field="mortgageYearsLeft" bindinput="onInputChange"/>
+        <text class="form-unit">年</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">物业取暖</text>
+        <input class="form-input" type="digit" value="{{expProperty}}" data-field="expProperty" bindinput="onInputChange"/>
+        <text class="form-unit">元</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 步骤 4: 当前开销 -->
+  <view wx:if="{{step === 4}}" class="step-card">
+    <view class="step-emoji">🛒</view>
+    <view class="step-title">每月花多少？</view>
+    <view class="chip-row">
+      <view class="chip" bindtap="quickExpenses" data-v="8000">~8千</view>
+      <view class="chip" bindtap="quickExpenses" data-v="12000">~1.2万</view>
+      <view class="chip" bindtap="quickExpenses" data-v="16000">~1.6万</view>
+    </view>
+    <view class="form-grid">
+      <view class="form-row">
+        <text class="form-label">餐饮</text>
+        <input class="form-input" type="digit" value="{{expFood}}" data-field="expFood" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">交通</text>
+        <input class="form-input" type="digit" value="{{expTransport}}" data-field="expTransport" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">宠物</text>
+        <input class="form-input" type="digit" value="{{expPet}}" data-field="expPet" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">娱乐</text>
+        <input class="form-input" type="digit" value="{{expEntertain}}" data-field="expEntertain" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">医疗保险</text>
+        <input class="form-input" type="digit" value="{{expInsurance}}" data-field="expInsurance" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">其他</text>
+        <input class="form-input" type="digit" value="{{expOther}}" data-field="expOther" bindinput="onInputChange"/><text>元</text>
+      </view>
+    </view>
+    <view class="total-row">月合计（不含住房）：{{currentNowTotal}} 元</view>
+  </view>
+
+  <!-- 步骤 5: 最低开销 -->
+  <view wx:if="{{step === 5}}" class="step-card">
+    <view class="step-emoji">🛟</view>
+    <view class="step-title">如果不再工作，最低月支出？</view>
+    <view class="chip-row">
+      <view class="chip" bindtap="quickMinExp" data-v="0.5">50%</view>
+      <view class="chip" bindtap="quickMinExp" data-v="0.6">60%</view>
+      <view class="chip" bindtap="quickMinExp" data-v="0.7">70%</view>
+    </view>
+    <view class="form-grid">
+      <view class="form-row">
+        <text class="form-label">住房</text>
+        <input class="form-input" type="digit" value="{{expQHousing}}" data-field="expQHousing" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">餐饮</text>
+        <input class="form-input" type="digit" value="{{expQFood}}" data-field="expQFood" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">交通</text>
+        <input class="form-input" type="digit" value="{{expQTransport}}" data-field="expQTransport" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">宠物</text>
+        <input class="form-input" type="digit" value="{{expQPet}}" data-field="expQPet" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">娱乐</text>
+        <input class="form-input" type="digit" value="{{expQEntertain}}" data-field="expQEntertain" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">医疗保险</text>
+        <input class="form-input" type="digit" value="{{expQInsurance}}" data-field="expQInsurance" bindinput="onInputChange"/><text>元</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">其他</text>
+        <input class="form-input" type="digit" value="{{expQOther}}" data-field="expQOther" bindinput="onInputChange"/><text>元</text>
+      </view>
+    </view>
+    <view class="total-row">月合计（含自缴社保）：{{currentMinTotal}} 元</view>
+  </view>
+
+  <!-- 步骤 6: 资产 -->
+  <view wx:if="{{step === 6}}" class="step-card">
+    <view class="step-emoji">🏦</view>
+    <view class="step-title">有多少积蓄？</view>
+    <view class="chip-row">
+      <view class="chip" bindtap="quickAssets" data-v="10">10万</view>
+      <view class="chip" bindtap="quickAssets" data-v="30">30万</view>
+      <view class="chip" bindtap="quickAssets" data-v="50">50万</view>
+    </view>
+    <view class="form-grid">
+      <view class="form-row">
+        <text class="form-label">现金</text>
+        <input class="form-input" type="digit" value="{{assetCash}}" data-field="assetCash" bindinput="onInputChange"/><text>万</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">定存理财</text>
+        <input class="form-input" type="digit" value="{{assetDeposit}}" data-field="assetDeposit" bindinput="onInputChange"/><text>万</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">基金</text>
+        <input class="form-input" type="digit" value="{{assetFund}}" data-field="assetFund" bindinput="onInputChange"/><text>万</text>
+      </view>
+      <view class="form-row">
+        <text class="form-label">股票</text>
+        <input class="form-input" type="digit" value="{{assetStock}}" data-field="assetStock" bindinput="onInputChange"/><text>万</text>
+      </view>
+    </view>
+    <view class="total-row">总资产：{{currentAssetTotal}} 万</view>
+
+    <view class="section-label">子女计划</view>
+    <view class="chip-row">
+      <view class="chip {{childPlan==='none'?'active':''}}" bindtap="setChild" data-v="none">暂无计划</view>
+      <view class="chip {{childPlan==='one'?'active':''}}" bindtap="setChild" data-v="one">计划要孩子</view>
+    </view>
+    <view wx:if="{{childPlan==='one'}}" class="form-row">
+      <text class="form-label">每年支出</text>
+      <input class="form-input" type="digit" value="{{childCost}}" data-field="childCost" bindinput="onInputChange"/>
+      <text class="form-unit">万元</text>
+    </view>
+  </view>
+
+  <!-- 导航 -->
+  <view class="nav-bar">
+    <view class="nav-btn secondary" wx:if="{{step > 0}}" bindtap="prevStep">← 上一题</view>
+    <view wx:else></view>
+    <text class="nav-count">{{step + 1}}/{{totalSteps}}</text>
+    <view class="nav-btn primary" wx:if="{{step < totalSteps - 1}}" bindtap="nextStep">下一题 →</view>
+    <view class="nav-btn done" wx:if="{{step === totalSteps - 1}}" bindtap="finish">✨ 完成，看结果</view>
+  </view>
+</view>

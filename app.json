@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/wizard/wizard",
+    "pages/dashboard/dashboard"
+  ],
+  "window": {
+    "navigationBarTitleText": "ShoreOS",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f2f2f7"
+  },
+  "tabBar": {
+    "color": "#8e8e93",
+    "selectedColor": "#007aff",
+    "backgroundColor": "#f9f9f9",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/dashboard/dashboard",
+        "iconPath": "",
+        "selectedIconPath": "",
+        "text": "仪表盘"
+      },
+      {
+        "pagePath": "pages/wizard/wizard",
+        "iconPath": "",
+        "selectedIconPath": "",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,17 @@
+/* 全局样式 */
+page {
+  background: #f2f2f7;
+  font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  color: #1c1c1e;
+  -webkit-font-smoothing: antialiased;
+}
+.container { padding: 0 12px; }
+.card {
+  background: #fff; border-radius: 14px; padding: 16px;
+  margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.text-muted { color: #8e8e93; }
+.text-primary { color: #007aff; }
+.text-green { color: #34c759; }
+.text-orange { color: #ff9500; }
+.text-red { color: #ff3b30; }
